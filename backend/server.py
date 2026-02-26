@@ -12,9 +12,9 @@ from datetime import datetime, timezone, timedelta
 import json
 import re
 import base64
+import base64
 from passlib.context import CryptContext
 from jose import JWTError, jwt
-from emergentintegrations.llm.chat import LlmChat, UserMessage
 from enum import Enum
 
 ROOT_DIR = Path(__file__).parent
@@ -1998,7 +1998,7 @@ async def seed_sticker_packs():
 async def analyze_mood(req: MoodAnalysisRequest, user: dict = Depends(get_current_user)):
     """Analyze text mood and suggest emojis/sounds using GPT-5.2"""
     try:
-        if not EMERGENT_LLM_KEY:
+        if not EMERGENT_LLM_KEY or LlmChat is None or UserMessage is None:
             return get_fallback_suggestions(req.text)
         
         chat = LlmChat(
